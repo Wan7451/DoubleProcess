@@ -21,12 +21,20 @@ public class JobHandleService extends JobService {
 
     private int kJobId = 0;
 
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("INFO", "jobService start");
+        scheduleJob(getJobInfo());
+        return START_NOT_STICKY;
+    }
+
     @Override
     public boolean onStartJob(JobParameters params) {
         boolean isLocalServiceWork = isServiceWork(this, "com.dn.keepliveprocess.LocalService");
         boolean isRemoteServiceWork = isServiceWork(this, "com.dn.keepliveprocess.RemoteService");
-//		Log.i("INFO", "localSericeWork:"+isLocalServiceWork);
-//		Log.i("INFO", "remoteSericeWork:"+isRemoteServiceWork);
+		Log.i("INFO", "localSericeWork:"+isLocalServiceWork);
+		Log.i("INFO", "remoteSericeWork:"+isRemoteServiceWork);
         if(!isLocalServiceWork||
                 !isRemoteServiceWork){
             this.startService(new Intent(this,LocalService.class));
